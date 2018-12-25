@@ -1,0 +1,4 @@
+.idea
+venv
+pybindedit/named.conf
+**/__pycache__
