@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import request
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 import os
 import re
 
@@ -13,6 +13,7 @@ rePatternOptions = '^([^;]*)([^\\n]*)'
 rePatternOptionsCompiled = re.compile(rePatternOptions, re.MULTILINE)
 
 # Create your views here.
+@login_required
 def index(req):
     bindFile = open(bindPath, 'r')
     bindContent = bindFile.read()

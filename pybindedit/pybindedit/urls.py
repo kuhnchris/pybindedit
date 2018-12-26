@@ -18,6 +18,6 @@ from django.urls import path
 from pybindeditapp.views import index
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('user/', admin.site.urls),
     path('',index)
 ]
