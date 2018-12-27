@@ -21,15 +21,23 @@ python pybindedit/manage.py createsuperuser
 ```
 Follow the prompt as requested.
 
-### Todos:
-* [ ] Implement ```BIND9``` restart
-* [ ] Add ```docker-compose.yml```
-* [x] Implement ```Add new entry``` 
+
+### *Open* Todo list:
+* [ ] Add useful commands to ```Makefile```
 * [ ] Implement ```edit``` button
+* [ ] Implement ```save``` button
+* [ ] Test / PyTest / Unit Test(s)
+* [ ] Document & comment source code 
+
+### *Finished* Todos:
+* [x] Implement ```BIND9``` restart (via ```docker```)
+* [x] Add ```docker-compose.yml``` and ```Dockerfile```
+* [x] Add ```example/``` folder and files
+* [x] Implement ```Add new entry``` 
+* [x] Add ```Makefile``` for ease of use
+* [x] Add requirements.txt (from ```pip freeze```)
 * [x] Implement ```user auth```
 * [x] Keep ```.gitignore``` up to date
 * [x] implement drag & drop to move lines
 * [x] refactor to use template(s) for the (dns-) lines
 * [x] refactor ```toast``` by ```bootstrap``` into own component/app
-* [ ] Test / PyTest / Unit Test(s)
-* [ ] Document & comment source code 

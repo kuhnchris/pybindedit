@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import request, response, JsonResponse
+from django.forms import Form, ModelForm
+import traceback
 import os
 import re
-
+import docker
 
 bindPath=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/named.conf'
 # pattern(s)
@@ -12,7 +15,49 @@ rePatternCompiled = re.compile(rePattern, re.MULTILINE)
 rePatternOptions = '^([^;]*)([^\\n]*)'
 rePatternOptionsCompiled = re.compile(rePatternOptions, re.MULTILINE)
 
+def dockerAction_restart():
+    try:
+        client = docker.from_env()
+        dnsDockerContainers = client.containers.list(filters={"name": "dns"})
+        if len(dnsDockerContainers) != 1:
+            return {"result": "failed due to dnsDockerContainer count not equal 1", "OK": False, "dnsContainers": len(dnsDockerContainers)}
+        dnsDockerContainers[0].restart()
+        return {"OK": True}
+    except Exception as e:
+        return {"result": "EXCEPTION (dockerActionRestart): "+str(e) + ''.join(traceback.format_tb(e.__traceback__)), "OK": False}
+
+def dnsCommand_save():
+    pass
+
 # Create your views here.
+@login_required
+def dnsCommand_real(request):
+    if request.method == "POST":
+        if "restart" in request.POST:
+            return JsonResponse(dockerAction_restart())
+        elif "save" in request.POST:
+            return JsonResponse(dnsCommand_save())
+            #return JsonResponse({"reason": "not implemented", "method": "save"})
+        elif "save-and-restart" in request.POST:
+            # save-action: dnsCommand_save()
+            # restart-action: dockerAction_restart()
+            return JsonResponse({"reason": "not implemented", "method": "save-and-restart"})
+        else:
+            return JsonResponse({"reason": "???", "cleaned_data": request.POST})
+    return JsonResponse({"reason": "invalid request"})
+
+
+@login_required
+def dnsCommand(request):
+    return dnsCommand_real(request)
+    if request.method == "POST":
+        keys = []
+        for k in request.POST.keys():
+            keys.append(k)
+        return JsonResponse({"keys": keys}, safe=False)
+    else:
+        return JsonResponse({"reason": "invalid"})
+
 @login_required
 def index(req):
     bindFile = open(bindPath, 'r')

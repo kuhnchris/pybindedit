@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from pybindeditapp.views import index
+from pybindeditapp import views as pybindviews
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('user/', admin.site.urls),
-    path('',index)
+    path('',pybindviews.index),
+    path('dns/', pybindviews.dnsCommand)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

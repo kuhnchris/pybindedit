@@ -1,16 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
 {% load toast %}
 {% load static %}
 {% toast 'title' 'subtitle' 'content' %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>DNS bind config edit</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/solid.css" integrity="sha384-+0VIRx+yz1WBcCTXBkVQYIBVNEFH1eP6Zknm16roZCyeNg2maWEpk/l/KsyFKs7G" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/fontawesome.css" integrity="sha384-jLuaxTTBR42U2qJ/pm4JRouHkEDHkVqH0T1nyQXn1mZ7Snycpf6Rl25VBNthU4z0" rel="stylesheet">
-    <link rel="stylesheet" href={% static "css/style.css" %}>
-    <script src={% static "js/dnsView.js" %}></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/solid.css" integrity="sha384-+0VIRx+yz1WBcCTXBkVQYIBVNEFH1eP6Zknm16roZCyeNg2maWEpk/l/KsyFKs7G" rel="stylesheet" />
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/fontawesome.css" integrity="sha384-jLuaxTTBR42U2qJ/pm4JRouHkEDHkVqH0T1nyQXn1mZ7Snycpf6Rl25VBNthU4z0" rel="stylesheet" />
+    <link rel="stylesheet" href={% static "css/style.css" %} />
+    <script src='{% static "js/dnsView.js" %}'></script>
     {% block toast_javascript %}{% endblock toast_javascript %}
 </head>
 <body onload="javascript:init()">
@@ -179,18 +179,22 @@
         </div>
         <div class="m-5">&nbsp;</div>
         <div class="fixed-bottom p-2 bg-shady">
-            <button class="btn btn-primary" data-target="#addNewEntryPopup" data-toggle="modal" type="button">
-                (+) Add new entry
-            </button>
-            <button class="btn btn-primary" type="button">
-                Save config
-            </button>
-            <button class="btn btn-primary" type="button">
-                Restart bind
-            </button>
-            <button class="btn btn-primary" type="button">
-                Save config & restart bind
-            </button>
+            <form method="POST" action="/dns/">
+                {% csrf_token %}
+                <button class="btn btn-primary" data-target="#addNewEntryPopup" data-toggle="modal" type="button">
+                    (+) Add new entry
+                </button>
+                <button class="btn btn-primary" type="button" id="save" name="save">
+                    Save config
+                </button>
+                <button class="btn btn-primary" type="submit" id="restart" name="restart">
+                    Restart bind
+                </button>
+
+                <button class="btn btn-primary" type="submit" id="save-and-restart" name="save-and-restart">
+                    Save config & restart bind
+                </button>
+            </form>
         </div>
     </div>
 
